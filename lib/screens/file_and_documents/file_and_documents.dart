@@ -1,3 +1,5 @@
+import 'package:bot_org_manage/screens/common/page_header/header_index.dart';
+import 'package:bot_org_manage/screens/common/page_header_info/user_info_detail.dart';
 import 'package:bot_org_manage/screens/dashboard/widgets/userinfo.dart';
 import 'package:flutter/material.dart';
 
@@ -25,13 +27,11 @@ class _FileAndDocumentsState extends State<FileAndDocuments> {
         onRefresh: _reloadData,
         child: Column(
           children: [
-            UserInfo(
-              navigationParams: NavigationParams(
-                isChildPage: param.isChildPage,
-                pageName: "Document & File's",
-              ),
+            HeaderIndex(
+              isChildPage: false,
             ),
-            NavigationPage.GetUnderconstructionPage(),
+            UserInfoDetail(),
+            Navigate.GetUnderconstructionPage(),
           ],
         ),
       ),

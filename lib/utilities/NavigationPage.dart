@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-class NavigationPage {
-  static const String DashboardPage = "dashboard";
-  static const String AttendancePage = "attendance";
-  static const String TrackPage = "track";
-  static const String ProfilePage = "profile";
-  static const String LoginPage = "login";
-  static const String HomePage = "home";
-  static const String ApplyAttendancePage = "applyAttendancePage";
-  static const String CalendarPage = "calendar";
-  static const String ReferralPage = "referral";
-  static const String SalaryStatement = "salary_statement";
-  static const String MyTiming = "my_timing";
-  static const String FilesAndDocuments = "file_documents";
-  static const String DailyActivity = "daily_activity";
-  static const String AttendanceLeaveApproval = "attendance_leave_approval";
+class Navigate {
+  static const String dashboard = "/dashboard";
+  static const String attendance = "/attendance";
+  static const String track = "/track";
+  static const String profile = "/profile";
+  static const String login = "/login";
+  static const String home = "/home";
+  static const String apply = "/applyAttendancePage";
+  static const String calendar = "/calendar";
+  static const String referral = "/referral";
+  static const String salaryStatement = "/salary_statement";
+  static const String myTiming = "/my_timing";
+  static const String filesAndDocuments = "/file_documents";
+  static const String dailyActivity = "/daily_activity";
+  static const String attendanceLeaveApproval = "/attendance_leave_approval";
 
   static const int DashboardIndex = 0;
   static const int AttendanceIndex = 1;
@@ -25,7 +25,7 @@ class NavigationPage {
   static void navigateToPage(String pageName, BuildContext context, {dynamic argument = null}) {
     Navigator.pushNamed(
       context,
-      NavigationPage.CalendarPage,
+      Navigate.calendar,
       arguments: null,
     ).then((value) {
       // write your login here

@@ -6,16 +6,16 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
 
-class Attendance extends StatefulWidget {
+class AttendanceCards extends StatefulWidget {
   final Function reLoadPage;
 
-  const Attendance({Key? key, required this.reLoadPage}) : super(key: key);
+  const AttendanceCards({Key? key, required this.reLoadPage}) : super(key: key);
 
   @override
-  State<Attendance> createState() => _AttendanceState();
+  State<AttendanceCards> createState() => _AttendanceCardsState();
 }
 
-class _AttendanceState extends State<Attendance> {
+class _AttendanceCardsState extends State<AttendanceCards> {
   List<AttendanceModal> attendances = [];
 
   @override

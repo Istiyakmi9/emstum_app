@@ -2,6 +2,8 @@ import 'package:bot_org_manage/modal/Configuration.dart';
 import 'package:bot_org_manage/modal/approvalModel.dart';
 import 'package:bot_org_manage/modal/user.dart';
 import 'package:bot_org_manage/modal/utils.dart';
+import 'package:bot_org_manage/screens/common/page_header/header_index.dart';
+import 'package:bot_org_manage/screens/common/page_header_info/user_info_detail.dart';
 import 'package:bot_org_manage/service/ajax.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -607,12 +609,10 @@ class _AttendanceLeaveApprovalState extends State<AttendanceLeaveApproval> {
         onRefresh: getPageData,
         child: Column(
           children: [
-            UserInfo(
-              navigationParams: NavigationParams(
-                isChildPage: _arguments!.isChildPage,
-                pageName: "Approval Request",
-              ),
+            HeaderIndex(
+              isChildPage: false,
             ),
+            UserInfoDetail(),
             Container(
               margin: EdgeInsets.only(
                 top: 10,

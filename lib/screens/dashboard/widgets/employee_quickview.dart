@@ -1,3 +1,4 @@
+import 'package:bot_org_manage/screens/common/container_card/container_card.dart';
 import 'package:bot_org_manage/utilities/NavigationPage.dart';
 import 'package:flutter/material.dart';
 
@@ -10,13 +11,10 @@ class EmployeeQuickViews extends StatelessWidget {
     if (actionCard.isMenuPage) {
       this.changeMenu!(actionCard.menuIndex);
     } else {
-      Navigator.pushNamed(
-        context,
-        actionCard.page!,
-        arguments: NavigationParams(
-          isChildPage: true,
-        )
-      );
+      Navigator.pushNamed(context, actionCard.page!,
+          arguments: NavigationParams(
+            isChildPage: true,
+          ));
     }
   }
 
@@ -27,20 +25,10 @@ class EmployeeQuickViews extends StatelessWidget {
       },
       child: SizedBox(
         height: 100,
-        child: Card(
-          elevation: 1,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          color: Colors.white,
+        child: ContainerCard(
           child: Container(
-            padding: const EdgeInsets.only(
-              top: 20,
-              bottom: 2,
-              left: 10,
-              right: 10,
-            ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   actionCard.icon,
@@ -86,11 +74,13 @@ class EmployeeQuickViews extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: 280,
+      margin: EdgeInsets.symmetric(
+        horizontal: 20,
+      ),
       child: GridView.count(
         primary: false,
-        padding: const EdgeInsets.all(20),
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
         crossAxisCount: 3,
@@ -101,7 +91,7 @@ class EmployeeQuickViews extends StatelessWidget {
               titleSecondLine: "Attendance",
               icon: Icons.calendar_month_sharp,
               textColor: Colors.deepPurple,
-              menuIndex: NavigationPage.AttendanceIndex,
+              menuIndex: Navigate.AttendanceIndex,
               page: null,
               isMenuPage: true,
             ),
@@ -113,7 +103,7 @@ class EmployeeQuickViews extends StatelessWidget {
               titleSecondLine: "Management",
               icon: Icons.time_to_leave,
               textColor: Colors.green,
-              menuIndex: NavigationPage.LeaveIndex,
+              menuIndex: Navigate.LeaveIndex,
               page: null,
               isMenuPage: true,
             ),
@@ -126,7 +116,7 @@ class EmployeeQuickViews extends StatelessWidget {
               icon: Icons.lock_clock_outlined,
               textColor: Colors.blueGrey,
               menuIndex: 0,
-              page: NavigationPage.MyTiming,
+              page: Navigate.myTiming,
               isMenuPage: false,
             ),
             context,
@@ -138,7 +128,7 @@ class EmployeeQuickViews extends StatelessWidget {
               icon: Icons.currency_exchange,
               textColor: Colors.red,
               menuIndex: 0,
-              page: NavigationPage.SalaryStatement,
+              page: Navigate.salaryStatement,
               isMenuPage: false,
             ),
             context,
@@ -150,7 +140,7 @@ class EmployeeQuickViews extends StatelessWidget {
               icon: Icons.person,
               textColor: Colors.deepOrange,
               menuIndex: 0,
-              page: NavigationPage.ReferralPage,
+              page: Navigate.referral,
               isMenuPage: false,
             ),
             context,
@@ -162,7 +152,7 @@ class EmployeeQuickViews extends StatelessWidget {
               icon: Icons.folder_copy_outlined,
               textColor: Colors.deepOrangeAccent,
               menuIndex: 0,
-              page: NavigationPage.FilesAndDocuments,
+              page: Navigate.filesAndDocuments,
               isMenuPage: false,
             ),
             context,

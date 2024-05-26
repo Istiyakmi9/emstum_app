@@ -1,9 +1,9 @@
 import 'package:bot_org_manage/modal/Configuration.dart';
 import 'package:flutter/material.dart';
 
-import '../../modal/user.dart';
-import '../../modal/utils.dart';
-import '../../utilities/NavigationPage.dart';
+import '../../../modal/user.dart';
+import '../../../modal/utils.dart';
+import '../../../utilities/NavigationPage.dart';
 
 class DrawerMenu extends StatefulWidget {
   const DrawerMenu({Key? key}) : super(key: key);
@@ -157,7 +157,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                       Navigator.pop(context);
                       Navigator.pushNamed(
                         context,
-                        NavigationPage.AttendanceLeaveApproval,
+                        Navigate.attendanceLeaveApproval,
                         arguments: NavigationParams(isChildPage: true),
                       );
                     },

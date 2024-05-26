@@ -84,7 +84,7 @@ class User {
     instance.CreatedOn = toDateTime(json["CreatedOn"]);
     instance.DOB = toDateTime(json["DOB"]);
     instance.Designation = json["Designation"];
-    instance.Email = json["Email"];
+    instance.Email = json["EmailId"];
     instance.EmployeeCurrentRegime = json["EmployeeCurrentRegime"];
     instance.EmployeeId = json["UserId"];
     instance.FirstName = json["FirstName"];

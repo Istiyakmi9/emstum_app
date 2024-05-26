@@ -5,10 +5,13 @@ import 'package:bot_org_manage/modal/LeaveTypeBrief.dart';
 import 'package:bot_org_manage/modal/Leaves.dart';
 import 'package:bot_org_manage/modal/user.dart';
 import 'package:bot_org_manage/modal/utils.dart';
+import 'package:bot_org_manage/screens/leave/leave_controller.dart';
+import 'package:bot_org_manage/screens/leave/widget/apply_leave.dart';
 import 'package:bot_org_manage/service/ajax.dart';
 import 'package:bot_org_manage/utilities/NavigationPage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
 
 class LeavesReport extends StatefulWidget {
@@ -19,132 +22,7 @@ class LeavesReport extends StatefulWidget {
 }
 
 class _LeavesReportState extends State<LeavesReport> {
-  bool _isLoaded = false;
-  bool _isRedirect = false;
-  final Ajax _ajax = Ajax.getInstance();
-  User _user = User();
-  List<Leaves> _leaves = <Leaves>[];
-  List<LeaveTypeBrief> _brief = [];
-
-  Future<int> validateResponse(dynamic result) async {
-    int isPassed = 0;
-    if (result == null) {
-      Fluttertoast.showToast(msg: "Invalid response for the leaves");
-      isPassed = 1;
-    }
-
-    if (result["LeaveNotificationDetail"] == null) {
-      Fluttertoast.showToast(msg: "Leave detail not found");
-      isPassed = 2;
-    }
-
-    if (result["LeaveTypeBriefs"] == null) {
-      Fluttertoast.showToast(
-          msg: "Leave type not found. Please contact to admin.");
-      isPassed = 1;
-    }
-
-    return isPassed;
-  }
-
-  Future<void> calculateAndLoadData(dynamic value) async {
-    var util = Util();
-    var leaves = <Leaves>[];
-    var leaveNotifications = value["LeaveNotificationDetail"];
-
-    int i = 0;
-    while (i < leaveNotifications.length) {
-      leaves.add(Leaves.fromJson(leaveNotifications[i], util));
-      i++;
-    }
-
-    List<LeaveTypeBrief> brief = [];
-    var leaveTypeBrief = value["LeaveTypeBriefs"];
-    i = 0;
-    while (i < leaveTypeBrief.length) {
-      brief.add(LeaveTypeBrief.fromJson(leaveTypeBrief[i]));
-      i++;
-    }
-
-    setState(() {
-      _leaves = leaves;
-      _brief = brief;
-      _isLoaded = true;
-      _isRedirect = false;
-    });
-  }
-
-  Future<void> loadLeaveData() async {
-    _ajax.post("Leave/GetAllLeavesByEmpId",
-        {"EmployeeId": _user.EmployeeId}).then((value) async {
-      var status = await validateResponse(value);
-      if (status == 0 || status == 2) {
-        calculateAndLoadData(value);
-      }
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    var util = Util();
-    _user = util.getUserDetail();
-
-    setState(() {
-      _isLoaded = false;
-      _user = _user;
-      _isRedirect = false;
-    });
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      loadLeaveData();
-    });
-  }
-
-  Widget applySection(BuildContext ctx) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Text("User name"),
-        ElevatedButton.icon(
-          onPressed: () {
-            setState(() {
-              _isRedirect = true;
-            });
-
-            Navigator.pushNamed(
-              ctx,
-              NavigationPage.CalendarPage,
-              arguments: _brief,
-            ).then((value) {
-              if (value == null) {
-                setState(() {
-                  _isRedirect = false;
-                });
-              } else {
-                calculateAndLoadData(value);
-              }
-            });
-          },
-          icon: _isRedirect
-              ? SizedBox(
-                  width: Configuration.getLoaderSize,
-                  height: Configuration.getLoaderSize,
-                  child: const CircularProgressIndicator(
-                    color: Colors.white,
-                  ),
-                )
-              : const Icon(
-                  // <-- Icon
-                  Icons.rocket_launch_outlined,
-                  size: 24.0,
-                ),
-          label: const Text('Apply Now'), // <-- Text
-        ),
-      ],
-    );
-  }
+  var controller = Get.put(LeaveController());
 
   @override
   Widget build(BuildContext context) {
@@ -157,9 +35,9 @@ class _LeavesReportState extends State<LeavesReport> {
               left: Configuration.width * 0.03,
               right: Configuration.width * 0.03,
             ),
-            child: applySection(context),
+            child: ApplyLeave(),
           ),
-          _leaves.isEmpty
+          controller.leaves.isEmpty
               ? const Center(
                   child: Text("No record found"),
                 )
@@ -172,7 +50,7 @@ class _LeavesReportState extends State<LeavesReport> {
                   ),
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: _leaves.length,
+                    itemCount: controller.leaves.length,
                     padding: EdgeInsets.symmetric(
                       vertical: Configuration.height * 0.02,
                       horizontal: Configuration.width * 0.02,
@@ -191,7 +69,7 @@ class _LeavesReportState extends State<LeavesReport> {
                             border: Border(
                               left: BorderSide(
                                 color: Configuration.ColorFromHex(
-                                    _leaves[index].color!),
+                                    controller.leaves[index].color!),
                                 width: 6,
                               ),
                             ),
@@ -220,7 +98,8 @@ class _LeavesReportState extends State<LeavesReport> {
                                   height: 4,
                                 ),
                                 Text(
-                                  Jiffy(_leaves[index].fromDate).format("MMM"),
+                                  Jiffy(controller.leaves[index].fromDate)
+                                      .format("MMM"),
                                   style: const TextStyle(
                                     fontSize: 14,
                                   ),
@@ -228,7 +107,7 @@ class _LeavesReportState extends State<LeavesReport> {
                               ],
                             ),
                             title: Text(
-                              Jiffy(_leaves[index].fromDate)
+                              Jiffy(controller.leaves[index].fromDate)
                                   .format("do MMMM, yyyy"),
                               style: const TextStyle(
                                 fontSize: 18,
@@ -240,18 +119,20 @@ class _LeavesReportState extends State<LeavesReport> {
                               children: [
                                 Wrap(
                                   children: [
-                                    Text("Days: ${_leaves[index].numOfDays}"),
+                                    Text(
+                                        "Days: ${controller.leaves[index].numOfDays}"),
                                     const SizedBox(
                                       width: 15,
                                     ),
-                                    Text("(${_leaves[index].leaveTypeName!})"),
+                                    Text(
+                                        "(${controller.leaves[index].leaveTypeName!})"),
                                   ],
                                 ),
                                 Text(
-                                  _leaves[index].status!,
+                                  controller.leaves[index].status!,
                                   style: TextStyle(
                                     color: Configuration.ColorFromHex(
-                                        _leaves[index].color!),
+                                        controller.leaves[index].color!),
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
                                   ),
@@ -261,10 +142,6 @@ class _LeavesReportState extends State<LeavesReport> {
                             trailing: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const [
-                                // Image.asset(
-                                //   leaves[index].tralingIcon,
-                                //   width: 20,
-                                // ),
                                 Icon(Icons.more_vert_rounded),
                                 SizedBox(
                                   height: 10,

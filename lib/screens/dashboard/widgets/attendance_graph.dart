@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:bot_org_manage/screens/common/container_card/container_card.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -148,16 +149,10 @@ class _AttendanceGraphState extends State<AttendanceGraph> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 6,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      color: Colors.white,
-      margin: const EdgeInsets.only(
-        top: 10,
-        left: 20,
-        right: 20,
+    return ContainerCard(
+      margin: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 16
       ),
       child: Column(
         children: [

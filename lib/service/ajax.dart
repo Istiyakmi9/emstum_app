@@ -27,7 +27,7 @@ class Ajax {
 
   static Ajax getInstance() {
     // ajax.setBaseUrl("http://tracker.io/dn/api/");
-    ajax.setBaseUrl("https://www.emstum.com/bot/dn/core/api/");
+    ajax.setBaseUrl("https://www.emstum.com/bot/dn/api/");
     // ajax.setBaseUrl("http://192.168.0.102:5000/core/api/");
     return ajax;
   }
@@ -140,7 +140,7 @@ class Ajax {
         headers: <String, String>{
           'Content-type': 'application/json',
           'Accept': 'application/json',
-          'companycode': 'BOT-03',
+          'companycode': data["CompanyCode"],
           'Authorization': 'Bearer null'
         },
       );

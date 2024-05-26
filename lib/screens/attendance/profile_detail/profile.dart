@@ -1,3 +1,5 @@
+import 'package:bot_org_manage/screens/common/page_header/header_index.dart';
+import 'package:bot_org_manage/screens/common/page_header_info/user_info_detail.dart';
 import 'package:bot_org_manage/screens/dashboard/widgets/userinfo.dart';
 import 'package:bot_org_manage/utilities/NavigationPage.dart';
 import 'package:flutter/material.dart';
@@ -30,13 +32,11 @@ class _ProfileState extends State<Profile> {
       onRefresh: _reloadData,
       child: Column(
         children: [
-          UserInfo(
-            navigationParams: NavigationParams(
-              isChildPage: false,
-              pageName: "Profile",
-            ),
+          HeaderIndex(
+            isChildPage: false,
           ),
-          NavigationPage.GetUnderconstructionPage(),
+          UserInfoDetail(),
+          Navigate.GetUnderconstructionPage(),
         ],
       ),
     );

@@ -1,8 +1,11 @@
+import 'dart:io';
+
+import 'package:bot_org_manage/modal/Configuration.dart';
 import 'package:bot_org_manage/modal/appData.dart';
 import 'package:bot_org_manage/modal/attendaceModal.dart';
 import 'package:bot_org_manage/modal/utils.dart';
 import 'package:bot_org_manage/screens/approval/attendance_leavel_approval.dart';
-import 'package:bot_org_manage/screens/attendance/attendanceIndexPage.dart';
+import 'package:bot_org_manage/screens/attendance/attendance.dart';
 import 'package:bot_org_manage/screens/dashboard/dashboard.dart';
 import 'package:bot_org_manage/screens/employee_timing/employee_timing_report.dart';
 import 'package:bot_org_manage/screens/file_and_documents/file_and_documents.dart';
@@ -17,6 +20,7 @@ import 'package:bot_org_manage/screens/salary_detail/salary_statements.dart';
 import 'package:bot_org_manage/screens/todays_activity/daily_activity.dart';
 import 'package:bot_org_manage/utilities/NavigationPage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -52,7 +56,8 @@ class _MyAppState extends State<MyApp> {
     primary: Color.fromRGBO(21, 26, 74, 1),
     // <---- I set white color here
     secondary: Color(0x44444444),
-    background: Color(0xFF636363),
+    // background: Color(0xFF636363),
+    background: Color(0xffffffff),
     surface: Color(0xFF808080),
     onBackground: Colors.white,
     error: Colors.redAccent,
@@ -71,39 +76,40 @@ class _MyAppState extends State<MyApp> {
 
   @override
   build(BuildContext context) {
-    return MaterialApp(
+    Configuration.width = MediaQuery.of(context).size.width;
+    Configuration.height = MediaQuery.of(context).size.height;
+    Configuration.isAndroid = Platform.isAndroid;
+
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: "/",
-      routes: {
-        // NavigationPage.DashboardPage: (_) => Dashboard(changeMenu: null),
-        NavigationPage.ProfilePage: (_) => const Profile(),
-        NavigationPage.AttendancePage: (_) => const AttendanceIndexPage(),
-        NavigationPage.TrackPage: (_) => LeaveIndexPage(),
-        NavigationPage.LoginPage: (_) => const Login(),
-        NavigationPage.CalendarPage: (_) => Calendar(),
-        NavigationPage.ReferralPage: (_) => Referrals(),
-        NavigationPage.SalaryStatement: (_) => SalaryStatements(),
-        NavigationPage.MyTiming: (_) => EmployeeTimingReports(),
-        NavigationPage.FilesAndDocuments: (_) => FileAndDocuments(),
-        NavigationPage.DailyActivity: (_) => DailyActivity(),
-        NavigationPage.AttendanceLeaveApproval: (_) => AttendanceLeaveApproval(),
-        NavigationPage.ApplyAttendancePage: (_) =>
-            ApplyAttendance(attendanceModal: AttendanceModal()),
-        NavigationPage.HomePage: (_) => Home(NavigationPage.DashboardIndex),
-      },
-      onUnknownRoute: (setting) {
-        return MaterialPageRoute(builder: (_) => const Login());
-      },
-      // home: Home(NavigationPage.DashboardIndex),
-      home: const Login(),
+      getPages: [
+        GetPage(name: "/home", page: () => Home()),
+        GetPage(name: Navigate.profile, page: () => const Profile()),
+        GetPage(
+            name: Navigate.attendance,
+            page: () => const AttendanceIndexPage()),
+        GetPage(name: Navigate.track, page: () => LeaveIndexPage()),
+        GetPage(name: Navigate.login, page: () => const Login()),
+        GetPage(name: Navigate.calendar, page: () => Calendar()),
+        GetPage(name: Navigate.referral, page: () => Referrals()),
+        GetPage(name: Navigate.salaryStatement, page: () => SalaryStatements()),
+        GetPage(name: Navigate.myTiming, page: () => EmployeeTimingReports()),
+        GetPage(
+            name: Navigate.filesAndDocuments, page: () => FileAndDocuments()),
+        GetPage(name: Navigate.dailyActivity, page: () => DailyActivity()),
+        GetPage(
+            name: Navigate.attendanceLeaveApproval,
+            page: () => AttendanceLeaveApproval()),
+        GetPage(
+            name: Navigate.apply,
+            page: () => ApplyAttendance(attendanceModal: AttendanceModal())),
+      ],
+      unknownRoute:
+          GetPage(name: Navigate.login, page: () => const Login()),
       theme: ThemeData(
-          colorScheme: colorScheme,
-          textTheme: TextTheme(
-            bodyText1: TextStyle(fontSize: 16, color: colorScheme.primary),
-            headline1: TextStyle(fontSize: 18, color: colorScheme.primary),
-            headline2: TextStyle(fontSize: 20, color: colorScheme.primary),
-            button: const TextStyle(fontSize: 12),
-          )),
+        colorScheme: colorScheme,
+      ),
     );
   }
 }
